@@ -1,6 +1,7 @@
 function love.load()
   --BASIC INITIALIZATION STUFF
   love.window.setMode(640, 640)
+  love.window.setTitle("aphantasia")
   paintFont = love.graphics.newFont("/assets/Arvo-Regular.ttf", 14)
   titleFont = love.graphics.newFont("/assets/Arvo-Regular.ttf", 24)
   phoneFont = love.graphics.newFont("/assets/Arvo-Regular.ttf", 20)
@@ -227,6 +228,7 @@ function love.load()
   maxPoints = {5, 4, 4}
   congrats = "(This is a perfect score!)"
   winner = love.audio.newSource("/assets/Winner.wav", "static")
+  winner:setLooping(false)
   youWin = false
 
   realSolution = {}
@@ -517,13 +519,10 @@ function love.draw()
       love.graphics.draw(realSolution[gameNum], 360, 420, 0, .5)
     end
 
-
   end
 
   if gameState == 5 then
 
-
-    love.audio.play(winner)
     love.audio.play(themeSong)
     love.graphics.setColor(1, 1, 1)
     love.graphics.setBackgroundColor(1, 1, 1, 1)
@@ -599,7 +598,6 @@ function love.mousepressed(x, y, button, isTouch)
 
     if evalStart == true and button == 1 and love.mouse.getY() > 555 then
         eval = true
-        love.audio.play(winner)
     end
 
     if eval == true and button == 1 and next == 1 then
@@ -609,7 +607,7 @@ function love.mousepressed(x, y, button, isTouch)
       timePassed = 0
       next = 0
       evalStart = false
-      uncalc = false
+      uncalc = true
       eval = false
       youWin = false
       love.graphics.setCanvas(canvas)
@@ -621,11 +619,9 @@ function love.mousepressed(x, y, button, isTouch)
       waitTime = 0
       clickFocus = nil
       storyNum = 1
-      for i = 1, 13 do
-        solution[gameNum][i] = 0
-      end
       if gameNum == 3 then
         gameState = 5
+        love.audio.play(winner)
       end
       gameNum = gameNum + 1
     elseif eval == true and button == 1 and next == 0 then
